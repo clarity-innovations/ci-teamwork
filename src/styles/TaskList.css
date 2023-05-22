@@ -1,0 +1,21 @@
+.task-list {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background-color: #f4f4f4;
+}
+
+.readout-block {
+  display: flex;
+  align-items: center;
+  margin: 0;
+}
+
+.task-list > ul {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.tasklist-title {
+  display: flex;
+  flex-direction: column;
+}

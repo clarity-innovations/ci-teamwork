@@ -1,0 +1,12 @@
+.date-picker-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.date-picker-container label {
+  display: inline-block;
+  margin-right: 10px;
+  white-space: nowrap;
+}

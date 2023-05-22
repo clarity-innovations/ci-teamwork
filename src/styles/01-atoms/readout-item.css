@@ -1,0 +1,10 @@
+.a-readout-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-left: 5px;
+  margin-right: 5px;
+  width: 60px;
+  height: 30px;
+}

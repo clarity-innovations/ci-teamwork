@@ -1,0 +1,11 @@
+@import 'core.css';
+@import '01-atoms/index.css';
+@import '02-molecules/index.css';
+@import '03-cells/index.css';
+@import '04-organisms/index.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,400;0,500;0,600;1,400&display=swap');

@@ -1,0 +1,76 @@
+li:first-child {
+  border-top: solid black 1px;
+}
+li:last-child {
+  border-bottom: solid black 1px;
+}
+li.has-subtasks {
+  cursor: pointer;
+}
+li.has-subtasks {
+  list-style-type: disclosure-open;
+}
+li.has-subtasks.hide-subtasks {
+  list-style-type: disclosure-closed;
+}
+.hide-subtasks li {
+  display: none;
+}
+
+.task-description {
+  max-width: 400px;
+  overflow: auto;
+}
+
+.task-item-wrapper {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  margin: 0;
+}
+li:nth-child(odd) > .task-item {
+  background-color:  #c2c2c2
+}
+/* #E8E8E8 lighter grey */
+li:nth-child(even) > .task-item {
+  background-color: #189D8A;
+}
+
+.subtask-counter {
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 25px;
+  height: 25px;
+  background-color: lightgray;
+  border-radius: 50%;
+}
+
+.task-name {
+  margin-left: 5px;
+}
+
+.task-link {
+  padding: 5px;
+  margin-left: 5px;
+}
+
+.time-readout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-left: 5px;
+  margin-right: 5px;
+  width: 25px;
+  height: 25px;
+  background-color: lightgray;
+  border-radius: 50%;
+}
