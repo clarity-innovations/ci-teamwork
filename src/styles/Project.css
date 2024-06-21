@@ -2,14 +2,13 @@
   margin: auto;
   left: 0;
   right: 0;
-  max-width: 1000px;
+  max-width: 100%;
 }
 
 .projects .readout-block {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-left: 20px;
 }
 
 .project-client {

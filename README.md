@@ -28,7 +28,7 @@ This application makes use of version 1 of the Teamwork API. To use this applica
      ```
   1. Install dependencies:
      ```shell
-     npm install
+     npm ci
      ```
   1. Run the program:
      ```shell
@@ -81,6 +81,9 @@ Please read [the guidelines for contributing](CONTRIBUTING.md) for more details 
 * **Marc Sandoval** - *Creator of the original version*
 * **Bodie Wood** - *Fixed, updated, added new features* 
 * **Brandon Fenk** - *Fixed, updated, added new features* 
+* **Kim Robinson** - *Fixed, updated, added new features*
+* **Elena Rosa** - *Fixed, updated, added new features*
+
 
 ## License
 This project is licensed under the [MIT License](LICENSE.md).

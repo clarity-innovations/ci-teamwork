@@ -1,0 +1,30 @@
+---
+
+
+extends:
+  - react-app
+  - react-app/jest
+  - airbnb
+
+rules:
+  # We prefer the pattern of placing helper functions after the main
+  # function/class/object, not before.
+  no-use-before-define: off
+  
+  # We prefer slightly longer max code line length to more easily allow for
+  # descriptive identifiers.
+  max-len:
+    - error
+    -
+      ignoreStrings: false
+      ignoreUrls: true
+      code: 120
+      comments: 80
+
+  # Relaxing airbnb's label association requirements to require either nesting
+  # or htmlFor, instead of both.
+  jsx-a11y/label-has-associated-control:
+    - error
+    - 
+      assert: either
+      depth: 25

@@ -7,11 +7,11 @@ module.exports = {
       pine: '#007e74',
       offWhite: '#f6fbfb;',
       offGrey: '#9CA3AF',
-    },
-    extend: {
-      fontFamily: {
-        raleway: ['Raleway', 'sans-serif'],
-      },
+      amber: '#FFA500',
+      darkGrey: '#4B5563',
+      yellow: '#F3DD6D',
+      white: '#FFFFFF',
+      black: '#000000',
     },
   },
   plugins: [],

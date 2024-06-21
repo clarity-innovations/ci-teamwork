@@ -1,52 +1,77 @@
-li:first-child {
-  border-top: solid black 1px;
+.task-item-wrapper.has-subtasks {
 }
-li:last-child {
-  border-bottom: solid black 1px;
-}
-li.has-subtasks {
-  cursor: pointer;
-}
-li.has-subtasks {
-  list-style-type: disclosure-open;
-}
-li.has-subtasks.hide-subtasks {
-  list-style-type: disclosure-closed;
-}
-.hide-subtasks li {
+
+.hide-subtasks .task-item-wrapper {
   display: none;
 }
 
-.task-description {
-  max-width: 400px;
-  overflow: auto;
-}
-
 .task-item-wrapper {
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 
 .task-item {
   display: flex;
   align-items: center;
-  margin: 0;
+  justify-content: space-between;
 }
-li:nth-child(odd) > .task-item {
-  background-color:  #c2c2c2
+/* if task has no child, this color */
+.task-item-wrapper > .task-item {
+    background-color: #ccd7e0;
 }
-/* #E8E8E8 lighter grey */
-li:nth-child(even) > .task-item {
-  background-color: #189D8A;
+/* if task has child, parent this color */
+.task-item-wrapper:has(.task-item-wrapper) > .task-item {
+  background-color: #fbf5d3;
+}
+/* child task color */
+.task-item-wrapper.has-subtasks .task-item-wrapper > .task-item {
+  background-color: #e2d5e0;
+}
+/* grandchild task color */
+.task-item-wrapper .task-item-wrapper .task-item-wrapper > .task-item {
+  background-color: #cce7e4;
+}
+/* great-grandchild task color */
+.task-item-wrapper .task-item-wrapper .task-item-wrapper .task-item-wrapper > .task-item {
+  background-color: #cbcdcd;
+}
+/* remaining descendents will be very light gray */
+.task-item-wrapper .task-item-wrapper .task-item-wrapper .task-item-wrapper:has(.task-item-wrapper) > .task-item {
+  background-color: #eeeeee;
+}
+.disclosure-border {
+  border-width: 0 7px 7px;
+  border-style: solid;
+}
+/* no children */
+.task-item-wrapper:not(.has-subtasks) > .disclosure-border {
+  border-color: #ccd7e0;
+}
+/* has child, parent */
+.task-item-wrapper.has-subtasks > .disclosure-border {
+  border-color: #fbf5d3;
+}
+/* is child */
+.task-item-wrapper.has-subtasks .task-item-wrapper > .disclosure-border {
+  border-color: #e2d5e0;
+}
+/* grandchild task color */
+.task-item-wrapper.has-subtasks .task-item-wrapper .task-item-wrapper > .disclosure-border {
+  border-color: #cce7e4;
+}
+/* great-grandchild task color */
+.task-item-wrapper.has-subtasks .task-item-wrapper .task-item-wrapper .task-item-wrapper > .disclosure-border {
+  border-color: #cbcdcd;
+}
+/* further descendants */
+.task-item-wrapper.has-subtasks .task-item-wrapper .task-item-wrapper .task-item-wrapper:has(.task-item-wrapper) > .disclosure-border {
+  border-color: #eeeeee;
 }
 
 .subtask-counter {
   flex-shrink: 0;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   width: 25px;
   height: 25px;
   background-color: lightgray;
@@ -54,23 +79,45 @@ li:nth-child(even) > .task-item {
 }
 
 .task-name {
-  margin-left: 5px;
+  flex: 1 1 auto;
+  margin-left: 3px;
+  font-size: large;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.task-link {
-  padding: 5px;
-  margin-left: 5px;
+.task-disclosure-button {
+  flex-grow: 1;
+  transition: background-color 0.3s;
 }
 
-.time-readout {
+.disabled-button {
+    color: rgba(128, 128, 128, 0.5);
+    cursor: not-allowed; 
+}
+
+.task-disclosure-button.on {
+  background: #abefe9;
+}
+/* organizes the task info row  */
+.m-readout-group {
   display: flex;
   align-items: center;
   justify-content: center;
-
-  margin-left: 5px;
+  right: 0;
+  margin-left: auto;
   margin-right: 5px;
-  width: 25px;
-  height: 25px;
-  background-color: lightgray;
-  border-radius: 50%;
+  padding: 0px;
+  flex-shrink: 0;
 }
+
+.task-sparkline {
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
+}
+
+.task-outline-icon {
+  flex-shrink: 0;
+}
+
