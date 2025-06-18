@@ -37,12 +37,22 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    const [projectId, authorizationToken] = getStoredValues();
-    if (projectId) {
-      document.querySelector('#projectIdField').value = projectId;
-    }
-    if (authorizationToken) {
-      document.querySelector('#teamworkAuthField').value = authorizationToken;
+    const storedValues = getStoredValues();
+    const search = new URLSearchParams(document.location.search);
+
+    // URL search overrides stored values.
+    const companyName = search.get('companyName') ?? storedValues.companyName;
+    const projectId = search.get('projectId') ?? storedValues.projectId;
+    const { authToken } = storedValues;
+
+    document.getElementById('projectIdField').value = projectId;
+    document.getElementById('teamworkCompanyNameField').value = companyName;
+    document.getElementById('teamworkAuthField').value = authToken;
+
+    // A URL search for projectId automatically loads if the rest of the request
+    // data is also available.
+    if (search.get('projectId')?.length && companyName.length && authToken.length) {
+      this.updateData();
     }
   }
 
@@ -87,20 +97,27 @@ class App extends React.Component {
     }
     this.setState({ keyword });
 
+    const companyName = document.querySelector('#teamworkCompanyNameField').value;
     const projectId = document.querySelector('#projectIdField').value;
     if (!/^\d+$/.test(projectId)) {
       this.setState({ validationError: 'ProjectId is invalid. Please only use numbers' });
       return null;
     }
 
-    const teamworkAuthorization = document.querySelector('#teamworkAuthField').value;
-    const authorization = `Basic ${btoa(teamworkAuthorization)}`;
-    if (projectId && teamworkAuthorization) {
+    const authToken = document.querySelector('#teamworkAuthField').value;
+    const authorization = `Basic ${btoa(authToken)}`;
+    if (companyName && projectId && authToken) {
       this.setState({ loadResponseKey: 'loading' });
       setStoredValues({
-        'ci-teamwork--project': projectId,
-        'ci-teamwork--auth-token': teamworkAuthorization,
+        projectId,
+        authToken,
+        companyName,
       });
+
+      const newUrl = new URL(document.URL);
+      newUrl.searchParams.set('companyName', companyName);
+      newUrl.searchParams.set('projectId', projectId);
+      window.history.pushState(null, '', newUrl);
 
       const tasksPromise = fetchAllTeamworkTasks(projectId, authorization);
       const timeEntriesPromise = fetchAllTeamworkTime(projectId, authorization, startDate, endDate);
@@ -146,7 +163,12 @@ class App extends React.Component {
           Teamwork Time Report
         </header>
 
-        <div className="horizontal-container boxes rounded-md rounded-md h-30 space-around flex flex-wrap p-3">
+        {/* We use <form> only to submit when enter is pressed while in a field,
+        and prevent default behavior of reloading with field values in URL. */}
+        <form
+          className="horizontal-container boxes rounded-md rounded-md h-30 space-around flex flex-wrap p-3"
+          onSubmit={(event) => { event.preventDefault(); }}
+        >
           <div className="child border border-t-0 border-l-0 border-r-0 flex-grow rounded-md">
             <label htmlFor="teamworkCompanyNameField" className="pr-2 text-md">
               Company Name
@@ -169,7 +191,7 @@ class App extends React.Component {
               placeholder="Project Id"
             />
           </div>
-          <div className="child border border-t-0 border-l-0 border-r-0 border-b-0  flex-grow">
+          <div className="child border border-t-0 border-l-0 border-r-0 border-b-0 flex-grow">
             <label htmlFor="teamworkAuthField" className="pr-1 text-md">
               API Key
             </label>
@@ -180,28 +202,27 @@ class App extends React.Component {
               id="teamworkAuthField"
               placeholder="API Key"
             />
-
           </div>
           <button
-            type="button"
+            type="submit"
             className="rounded-t-xl rounded-b-xl bg-pine hover:bg-lightPine text-offWhite text-xl p-3 ml-3
               mt-4 mb-3 mr-1 items-center"
             onClick={() => this.updateData()}
           >
             Search
           </button>
+        </form>
 
-        </div>
         <div style={{ color: 'red' }}>{validationError}</div>
         <div className="a-load-indicator">{loadIndicatorContent}</div>
         <div className="filter-box flex flex-wrap justify-center px-0 sm:px-20 pt-6 pb-6">
           <div className="boxes rounded-md h-24 w-full sm:w-auto flex-grow sm:mt-0">
             <CalendarRange onDateRangeChange={() => this.updateData()} />
           </div>
-          <div className="boxes rounded-md h-24 w-full sm:w-auto flex-grow  sm:mt-0 ">
+          <div className="boxes rounded-md h-24 w-full sm:w-auto flex-grow sm:mt-0">
             <FilterByKeyword onKeywordChange={() => this.updateData()} />
           </div>
-          <div className="boxes rounded-md h-24 w-full sm:w-auto flex-grow  sm:mt-0">
+          <div className="boxes rounded-md h-24 w-full sm:w-auto flex-grow sm:mt-0">
             <div className="pl-3 pt-1 text-sm">
               <label htmlFor="timeFilterField">Filter by hours:</label>
             </div>
@@ -218,7 +239,7 @@ class App extends React.Component {
           </div>
           <div
             className="boxes rounded-md h-24
-            p-2 w-full sm:w-auto  sm:mt-0 flex items-center"
+            p-2 w-full sm:w-auto sm:mt-0 flex items-center"
           >
             <label htmlFor="filterZero" className="pl-4 pr-3 pt-1 text-sm flex">
               <input

@@ -1,3 +1,21 @@
+/**
+ * Parameters submitted to Teamwork API calls.
+ * @typedef {Object} apiRequestData
+ * @property {string} companyName Name of company as used in the
+ * Teamwork subdomain (e.g. company.teamwork.com)
+ * @property {string} projectId Numerical ID of project as found in the
+ * project URL (e.g https://company.teamwork.com/app/projects/999999)
+ * @property {string} authToken API token from Teamwork settings, "API &
+ * Mobile" tab.
+ */
+
+// Keys for local storage of API request arguments.
+const StorageKeys = {
+  COMPANY_NAME: 'ci-teamwork--company',
+  PROJECT_ID: 'ci-teamwork--project',
+  AUTH_TOKEN: 'ci-teamwork--auth-token',
+};
+
 function fetchTeamwork(query, parameters, authorization) {
   const companyName = document.querySelector('#teamworkCompanyNameField').value;
   const domain = `https://${companyName}.teamwork.com/`;
@@ -55,8 +73,6 @@ export function fetchAllTeamworkTime(
 ) {
   // @TODO Make sure times actually go to 500.
   const PAGE_SIZE = 500;
-
-  console.log('fetching times: page %d...', currentPage);
 
   return fetchTeamwork(
     'time_entries.json',
@@ -282,23 +298,37 @@ function accumulateSubtaskTime(task) {
   return subtaskTime;
 }
 
-export function setStoredValues(storeObject) {
-  if (storeObject) {
-    if (storeObject['ci-teamwork--project']) {
-      window.localStorage.setItem('ci-teamwork--project', storeObject['ci-teamwork--project']);
-    }
-    if (storeObject['ci-teamwork--auth-token']) {
-      window.localStorage.setItem('ci-teamwork--auth-token', storeObject['ci-teamwork--auth-token']);
-    }
+/**
+ * Stores API request arguments in localData.
+ * @param {apiRequestData} storeObject New API request data.
+ */
+export function setStoredValues({
+  companyName = '',
+  projectId = '',
+  authToken = '',
+}) {
+  if (companyName?.length) {
+    window.localStorage.setItem(StorageKeys.COMPANY_NAME, companyName);
+  }
+  if (projectId?.length) {
+    window.localStorage.setItem(StorageKeys.PROJECT_ID, projectId);
+  }
+  if (authToken?.length) {
+    window.localStorage.setItem(StorageKeys.AUTH_TOKEN, authToken);
   }
 }
 
+/**
+ * Gets API request arguments from localData.
+ * @return {apiRequestData} Stored api request data. Any items not in storage
+ * will be empty strings.
+ */
 export function getStoredValues() {
-  const projectId = window.localStorage.getItem('ci-teamwork--project');
-  const authToken = window.localStorage.getItem('ci-teamwork--auth-token');
+  const companyName = window.localStorage.getItem(StorageKeys.COMPANY_NAME) ?? '';
+  const projectId = window.localStorage.getItem(StorageKeys.PROJECT_ID) ?? '';
+  const authToken = window.localStorage.getItem(StorageKeys.AUTH_TOKEN) ?? '';
 
-  // Cast to string if falsey.
-  return [projectId || '', authToken || ''];
+  return { companyName, projectId, authToken };
 }
 
 // Gets an array of weekly time totals from a map of hours keyed by Date.

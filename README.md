@@ -83,6 +83,8 @@ Please read [the guidelines for contributing](CONTRIBUTING.md) for more details 
 * **Brandon Fenk** - *Fixed, updated, added new features* 
 * **Kim Robinson** - *Fixed, updated, added new features*
 * **Elena Rosa** - *Fixed, updated, added new features*
+* **Maya Maier** - *Fixed, updated, added new features*
+
 
 
 ## License
